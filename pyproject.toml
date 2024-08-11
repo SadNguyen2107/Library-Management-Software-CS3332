@@ -1,0 +1,9 @@
+[project]
+name = "Library_System_Management"
+version = "1.0.0"
+description = "The basic library System Management web app built in Flask Back-end"
+dependencies = [
+    "flask",
+    "Flask-SQLAlchemy",         # TODO: Will use in the future 
+    "python-dotenv",
+]
