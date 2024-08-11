@@ -12,7 +12,7 @@ All entities might be appear:
 ---
 erDiagram
     USER {
-        TEXT ID         PK
+        INT ID         PK
         TEXT name
         TEXT address
         TEXT phone_number
@@ -24,7 +24,7 @@ erDiagram
     }
 
     AUTHOR {
-        TEXT ID         PK
+        INT ID         PK
         VARCHAR(50) first_name
         VARCHAR(50) last_name
     }
@@ -41,35 +41,35 @@ erDiagram
         TEXT description
     }
 
-    BOOKS_GENRES {
+    BOOK_GENRES {
         TEXT ISBN       PK, FK
         TEXT genre      PK,FK
     }
 
-    BOOKS_AUTHOR {
+    BOOK_AUTHOR {
         TEXT ISBN       PK, FK
-        TEXT author_id      PK, FK
+        INT author_id      PK, FK
     }
     
     BOOK_COPY {
-        TEXT ID     PK
+        INT ID     PK
         TEXT ISBN   FK
         TEXT shelf_location             "UNIQUE"
         OPTION book_status      FK      "Available || Borrowed || Reserved"
     }
 
     RESERVATION {
-        TEXT reservation_id     PK
-        TEXT book_id            FK
-        TEXT borrower_id        FK
+        INT reservation_id     PK
+        INT book_id            FK
+        INT borrower_id        FK
         DATE reservation_date   
         DATE expiration_date
         OPTION reservation_status   FK  "Active || Cancelled || Fulfilled"
     }
 
     DEPOSIT {
-        TEXT borrower_id PK, FK
-        TEXT book_id    PK, FK
+        INT borrower_id PK, FK
+        INT book_id    PK, FK
         DATE issue_date
         DATE due_date
         DATE return_date
@@ -117,13 +117,13 @@ erDiagram
     BOOK_COPY ||--o{ DEPOSIT: book_id
     BOOK_COPY ||--o| RESERVATION: book_id
     BOOK_COPY }|--|| BOOK_STATUS: book_status
-    AUTHOR ||--|{ BOOKS_AUTHOR: author_id
+    AUTHOR ||--|{ BOOK_AUTHOR: author_id
 
     BOOK ||--|{ BOOK_COPY: ISBN
-    BOOK ||--|{ BOOKS_AUTHOR: ISBN
-    BOOK ||--|{ BOOKS_GENRES: ISBN
+    BOOK ||--|{ BOOK_AUTHOR: ISBN
+    BOOK ||--|{ BOOK_GENRES: ISBN
 
-    GENRE ||--|{ BOOKS_GENRES: genre
+    GENRE ||--|{ BOOK_GENRES: genre
 
     USER ||--o{ DEPOSIT: borrower_id
     USER ||--o{ RESERVATION: borrower_id
@@ -134,4 +134,7 @@ erDiagram
 
     DEPOSIT }o--|| RENEWAL_STATUS: renewal_status
 ```
-[Open this file with Web Browser (Chrome, Edge, Safari)](./mermaid-diagram-2024-08-10-235800.svg)
+OPTIONS:
+* Best Quality Image: [Open this file with Web Browser (Chrome, Edge, Safari) :star:](./mermaid-diagram-2024-08-12-044754.svg)
+
+* PNG Image: [Click here to view the PNG file :framed_picture:](./mermaid-diagram-2024-08-12-044820.png) 
