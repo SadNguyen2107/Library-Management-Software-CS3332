@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "The basic library System Management web app built in Flask Back-end"
 dependencies = [
     "flask",
-    "flask-restplus",         
+    "flask-restx",         
     "Flask-SQLAlchemy",         # TODO: Will use in the future 
     "python-dotenv",
 ]
