@@ -33,6 +33,7 @@ A configuration to enable or disable tracking modifications of objects.
 
 class Config:
     SECRET_KEY = CONFIG["SECRET_KEY"] or "dev"
+    DATABASE = CONFIG["DATABASE"]
     SQLALCHEMY_DATABASE_URI = (
         CONFIG["SQLALCHEMY_DATABASE_URI"] or "sqlite:///app.sqlite"
     )
