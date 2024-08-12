@@ -35,3 +35,9 @@ def create_app(config_class=DevelopmentConfig) -> Flask:
         return "<h1>Testing the Flask Application Factory Pattern</h1>"
 
     return app
+
+
+# Run in Debug Mode
+if __name__ == '__main__':
+    app: Flask = create_app()
+    app.run(debug=True)
