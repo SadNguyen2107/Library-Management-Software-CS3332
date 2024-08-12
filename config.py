@@ -32,12 +32,12 @@ A configuration to enable or disable tracking modifications of objects.
 
 
 class Config:
-    DEBUG = False
     SECRET_KEY = None
-
+    DATABASE = None
+    SQLALCHEMY_DATABASE_URI = None
+    SQLALCHEMY_TRACK_MODIFICATION = False
 
 class DevelopmentConfig(Config):
-    DEBUG = True
     SECRET_KEY = 'dev'
     DATABASE = os.path.join(basedir, 'instance', 'library_main.sqlite')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_main.sqlite')
@@ -45,8 +45,6 @@ class DevelopmentConfig(Config):
 
     
 class TestingConfig(Config):
-    DEBUG = True
-    TESTING = True
     SECRET_KEY = 'test'
     DATABASE = os.path.join(basedir, 'instance', 'library_test.sqlite')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_test.sqlite')
@@ -56,7 +54,6 @@ class TestingConfig(Config):
 # Configuration for production code
 # Load from .env file
 class ProductionConfig(Config):
-    DEBUG = False
     SECRET_KEY = CONFIG["SECRET_KEY"]
     DATABASE = CONFIG["DATABASE"]
     SQLALCHEMY_DATABASE_URI = CONFIG["SQLALCHEMY_DATABASE_URI"]
