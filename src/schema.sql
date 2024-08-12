@@ -29,7 +29,7 @@ CREATE TABLE BOOK (
     publication_date DATE NOT NULL,
     language TEXT NOT NULL,
     number_of_copies_available INTEGER NOT NULL,
-    book_cover_image BLOB,
+    book_cover_image TEXT,
     description TEXT NOT NULL
 );
 

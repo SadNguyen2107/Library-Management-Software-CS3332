@@ -37,7 +37,7 @@ erDiagram
         DATE publication_date
         TEXT language
         INT number_of_copies_available
-        BLOB book_cover_image
+        TEXT book_cover_image "HTTPS URL"
         TEXT description
     }
 
@@ -135,6 +135,6 @@ erDiagram
     DEPOSIT }o--|| RENEWAL_STATUS: renewal_status
 ```
 OPTIONS:
-* Best Quality Image: [Open this file with Web Browser (Chrome, Edge, Safari) :star:](./mermaid-diagram-2024-08-12-044754.svg)
+* Best Quality Image: [Open this file with Web Browser (Chrome, Edge, Safari) :star:](./mermaid-diagram-2024-08-12-211030.svg)
 
-* PNG Image: [Click here to view the PNG file :framed_picture:](./mermaid-diagram-2024-08-12-044820.png) 
+* PNG Image: [Click here to view the PNG file :framed_picture:](./mermaid-diagram-2024-08-12-211031.png) 
