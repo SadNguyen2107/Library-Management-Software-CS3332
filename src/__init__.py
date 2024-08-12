@@ -13,10 +13,10 @@ where you link all your Flask blueprints together.
 
 from flask import Flask
 
-from config import Config
+from config import DevelopmentConfig
 import db
 
-def create_app(config_class=Config) -> Flask:
+def create_app(config_class=DevelopmentConfig) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
 
