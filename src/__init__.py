@@ -14,6 +14,7 @@ where you link all your Flask blueprints together.
 from flask import Flask
 
 from config import Config
+import db
 
 def create_app(config_class=Config) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
@@ -21,6 +22,9 @@ def create_app(config_class=Config) -> Flask:
 
     # Initialize Flask Extensions here
     # TODO: Use SQlAlchemy Extension to do the Query Database with ORM
+    
+    # Init the db
+    db.init_app(app)
     
     # Register Blueprint here
     from src.main import bp as main_bp
