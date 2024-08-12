@@ -16,7 +16,7 @@ from dotenv import dotenv_values
 
 # Get the Config from the .env file
 basedir = os.path.abspath(os.path.dirname(__file__))
-CONFIG = dotenv_values(os.path.join(basedir, "instance" ,".env"))
+CONFIG = dotenv_values(os.path.join(basedir, "instance", ".env"))
 
 """
 ? SECRET_KEY: 
@@ -32,9 +32,32 @@ A configuration to enable or disable tracking modifications of objects.
 
 
 class Config:
-    SECRET_KEY = CONFIG["SECRET_KEY"] or "dev"
+    DEBUG = False
+    SECRET_KEY = None
+
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    SECRET_KEY = 'dev'
+    DATABASE = os.path.join(basedir, 'instance', 'library_main.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_main.sqlite')
+    SQLALCHEMY_TRACK_MODIFICATION = False
+
+    
+class TestingConfig(Config):
+    DEBUG = True
+    TESTING = True
+    SECRET_KEY = 'test'
+    DATABASE = os.path.join(basedir, 'instance', 'library_test.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_test.sqlite')
+    SQLALCHEMY_TRACK_MODIFICATION = False
+
+
+# Configuration for production code
+# Load from .env file
+class ProductionConfig(Config):
+    DEBUG = False
+    SECRET_KEY = CONFIG["SECRET_KEY"]
     DATABASE = CONFIG["DATABASE"]
-    SQLALCHEMY_DATABASE_URI = (
-        CONFIG["SQLALCHEMY_DATABASE_URI"] or "sqlite:///app.sqlite"
-    )
-    SQLALCHEMY_TRACK_MODIFICATION = bool(CONFIG["SQLALCHEMY_TRACK_MODIFICATION"]) or False
+    SQLALCHEMY_DATABASE_URI = CONFIG["SQLALCHEMY_DATABASE_URI"]
+    SQLALCHEMY_TRACK_MODIFICATION = bool(CONFIG["SQLALCHEMY_TRACK_MODIFICATION"])
