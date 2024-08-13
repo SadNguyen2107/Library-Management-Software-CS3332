@@ -43,18 +43,32 @@ def drop_db() -> None:
         ' WHERE type=?',
         ('table',),
     ).fetchall()
-
-    # Drop each table
-    tables_iter = iter(tables)
-    next(tables_iter)           # Exclude the table sqlite_sequence
     
-    for table in tables_iter:
+    # Drop every table 
+    for table in tables:
+        table_name = table[0]
+        if table_name == 'sqlite_sequence':             #? Skip this table
+            continue
+        
         db.execute(f"DROP TABLE IF EXISTS {table[0]}")
     
     # Commit changes and re-enable foreign key checks
     db.commit()
     db.execute('PRAGMA foreign_keys = ON')
 
+
+def insert_fake_data() -> None:
+    db = get_db()
+    
+    # Disable foreign key checks
+    db.execute('PRAGMA foreign_keys = OFF')
+
+    with current_app.open_resource("fake_data.sql", "r") as f:
+        db.executescript(f.read())
+    
+    # Commit changes and re-enable foreign key checks
+    db.commit()
+    db.execute('PRAGMA foreign_keys = ON')
 
 #? COMMAND to interact with Database
 @click.command("init-db")
@@ -71,6 +85,13 @@ def drop_db_command() -> None:
     click.echo("Dropped all the tables in the database.")
 
 
+@click.command("insert-db")
+def insert_fake_data_command() -> None:
+    # Insert the fake data into database
+    insert_fake_data()
+    click.echo("Inserted fake data into the database.")
+
+
 def init_app(app: Flask) -> None:
     # Tells Flask to call that function when cleaning up after returning the response
     app.teardown_appcontext(close_db)
@@ -78,3 +99,4 @@ def init_app(app: Flask) -> None:
     # Add A new command that can be called with the `flask` command
     app.cli.add_command(init_db_command)
     app.cli.add_command(drop_db_command)
+    app.cli.add_command(insert_fake_data_command)
