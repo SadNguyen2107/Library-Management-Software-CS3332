@@ -16,18 +16,20 @@ VALUES
 
 
 -- AUTHOR 
-INSERT INTO AUTHOR (first_name, last_name)
+INSERT INTO AUTHOR (name)
 VALUES
-('F. Scott', 'Fitzgerald'),
-('Harper', 'Lee'),
-('George', 'Orwell'),
-('J.D.', 'Salinger'),
-('Cormac', 'McCarthy'),
-('Jane', 'Austen'),
-('Ray', 'Bradbury'),
-('Dan', 'Brown'),
-('Gabriel', 'Garcia Marquez'),
-('Herman', 'Melville');
+('F. Scott Fitzgerald'),
+('Harper Lee'),
+('George Orwell'),
+('J.D. Salinger'),
+('Cormac McCarthy'),
+('Jane Austen'),
+('Ray Bradbury'),
+('Dan Brown'),
+('Gabriel Garcia Marquez'),
+('Herman Melville'),
+('Neil Gaiman'),
+('Terry Pratchett');
 
 
 -- BOOK_GENRES
@@ -42,7 +44,8 @@ VALUES
 ('978-0-452-27750-3', 'Science Fiction'),
 ('978-0-7432-7357-2', 'Thriller'),
 ('978-0-140-44255-5', 'Satire'),
-('978-0-7434-8623-4', 'Fantasy');
+('978-0-7434-8623-4', 'Fantasy'),
+('978-0-06-085398-3', 'Fantasy');
 
 
 -- BOOK_AUTHOR
@@ -57,7 +60,9 @@ VALUES
 ('978-0-452-27750-3', 7),
 ('978-0-7432-7357-2', 8),
 ('978-0-140-44255-5', 9),
-('978-0-7434-8623-4', 10);
+('978-0-7434-8623-4', 10),
+('978-0-06-085398-3', 11),
+('978-0-06-085398-3', 12);
 
 
 -- BOOK 
@@ -72,7 +77,8 @@ VALUES
 ('978-0-452-27750-3', 'Fahrenheit 451', 'Ballantine Books', 1, '1953-10-19', 'English', 4, 'fahrenheit_451.jpg', 'A novel set in a future where books are banned and "firemen" burn any that are found.'),
 ('978-0-7432-7357-2', 'The Da Vinci Code', 'Doubleday', 1, '2003-03-18', 'English', 9, 'da_vinci_code.jpg', 'A mystery thriller that explores an alternative religious history through art and symbology.'),
 ('978-0-140-44255-5', 'Animal Farm', 'Secker & Warburg', 1, '1945-08-17', 'English', 12, 'animal_farm.jpg', 'A satirical novella reflecting events leading up to the Russian Revolution of 1917 and then on into the Stalinist era of the Soviet Union.'),
-('978-0-7434-8623-4', 'The Hobbit', 'George Allen & Unwin', 1, '1937-09-21', 'English', 15, 'the_hobbit.jpg', 'A fantasy novel about the journey of Bilbo Baggins, a hobbit who is reluctantly drawn into an adventure to recover treasure guarded by a dragon.');
+('978-0-7434-8623-4', 'The Hobbit', 'George Allen & Unwin', 1, '1937-09-21', 'English', 15, 'the_hobbit.jpg', 'A fantasy novel about the journey of Bilbo Baggins, a hobbit who is reluctantly drawn into an adventure to recover treasure guarded by a dragon.'),
+('978-0-06-085398-3', 'Good Omens', 'William Morrow', 1, '1990-05-01', 'English', 5, 'good_omens.jpg', 'A comedic novel about the birth of the son of Satan and the coming of the End Times.');
 
 
 -- For "The Great Gatsby" (5 copies available)
@@ -193,6 +199,17 @@ VALUES
 ('978-0-7434-8623-4', 'J13', 'Available'),
 ('978-0-7434-8623-4', 'J14', 'Available'),
 ('978-0-7434-8623-4', 'J15', 'Available');
+
+
+-- Finally, let's add 5 copies of "Good Omens" to the BOOK_COPY table.
+INSERT INTO BOOK_COPY (ISBN, shelf_location, book_status)
+VALUES
+('978-0-06-085398-3', 'K1', 'Available'),
+('978-0-06-085398-3', 'K2', 'Available'),
+('978-0-06-085398-3', 'K3', 'Available'),
+('978-0-06-085398-3', 'K4', 'Available'),
+('978-0-06-085398-3', 'K5', 'Available');
+
 
 -- RESERVATION
 INSERT INTO RESERVATION (book_id, borrower_id, reservation_date, expiration_date, reservation_status)
