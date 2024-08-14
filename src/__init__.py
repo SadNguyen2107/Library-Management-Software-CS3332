@@ -14,21 +14,35 @@ where you link all your Flask blueprints together.
 from flask import Flask
 
 from config import DevelopmentConfig
-import db
+from src.extensions import db
+import commands
+
 
 def create_app(config_class=DevelopmentConfig) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
 
-    # Initialize Flask Extensions here
-    # TODO: Use SQlAlchemy Extension to do the Query Database with ORM
-    
-    # Init the db
+    #? Initialize Flask Extensions here
+    #? =====================================================================
+    # Add SQLAlchemy extension
     db.init_app(app)
     
-    # Register Blueprint here
+    # Init the commands to interact
+    commands.init_app(app)
+    
+    #? Register Blueprint here
+    #? =====================================================================
+    # Register Blueprint Main
     from src.main import bp as main_bp
     app.register_blueprint(main_bp)
+    
+    # Register Blueprint Book API 
+    from src.book import bp as book_bp
+    app.register_blueprint(book_bp)
+    
+    # Register Blueprint User API 
+    from src.user import bp as user_bp
+    app.register_blueprint(user_bp)
 
     @app.route("/test/")
     def test_page():

@@ -93,10 +93,12 @@ def insert_fake_data_command() -> None:
 
 
 def init_app(app: Flask) -> None:
-    # Tells Flask to call that function when cleaning up after returning the response
-    app.teardown_appcontext(close_db)
-
+    app.app_context().push()
+    
     # Add A new command that can be called with the `flask` command
     app.cli.add_command(init_db_command)
     app.cli.add_command(drop_db_command)
     app.cli.add_command(insert_fake_data_command)
+    
+    # Close the Database (If Needed)
+    close_db()

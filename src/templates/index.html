@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Library System Management APIs</title>
+</head>
+<body>
+    <h1>Available APIs</h1>
+    <ul>
+        {% for API in APIs %}
+            <li>{{ API[0] }} API: <a href="{{ API[1] }}">{{ API[1] }}</a>{{ API[2] }}</li>
+        {% endfor %}
+    </ul>
+    
+</body>
+</html>

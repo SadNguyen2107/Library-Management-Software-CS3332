@@ -39,15 +39,15 @@ class Config:
 
 class DevelopmentConfig(Config):
     SECRET_KEY = 'dev'
-    DATABASE = os.path.join(basedir, 'instance', 'library_main.sqlite')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_main.sqlite')
+    DATABASE = os.path.join(basedir, 'instance', 'library_main.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_main.db')
     SQLALCHEMY_TRACK_MODIFICATION = False
 
     
 class TestingConfig(Config):
     SECRET_KEY = 'test'
-    DATABASE = os.path.join(basedir, 'instance', 'library_test.sqlite')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_test.sqlite')
+    DATABASE = os.path.join(basedir, 'instance', 'library_test.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'library_test.db')
     SQLALCHEMY_TRACK_MODIFICATION = False
 
 
@@ -58,3 +58,11 @@ class ProductionConfig(Config):
     DATABASE = CONFIG["DATABASE"]
     SQLALCHEMY_DATABASE_URI = CONFIG["SQLALCHEMY_DATABASE_URI"]
     SQLALCHEMY_TRACK_MODIFICATION = bool(CONFIG["SQLALCHEMY_TRACK_MODIFICATION"])
+    
+    
+# Configuration by name
+config_by_name = {
+    'dev': DevelopmentConfig,
+    'test': TestingConfig,
+    'product': ProductionConfig
+}
