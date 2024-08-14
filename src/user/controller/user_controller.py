@@ -5,7 +5,7 @@ from src.user.util.dto import UserDto
 from src.user.service.user_service import get_all_user
 
 api = UserDto.api
-_user_dto = UserDto.user
+_user_dto = UserDto.user_dto
 
 
 @api.route('/users')

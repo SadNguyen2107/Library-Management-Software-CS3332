@@ -20,6 +20,10 @@ Steps:
 1. <a href="#step-1">Create Virtual Environment</a>
 2. <a href="#step-2">Run the python virtual environment</a>
 3. <a href="#step-3">Install the Project dependencies</a>
+4. <a href="#step-4">Create folder instance/</a>
+5. <a href="#step-5">Create file .env</a>
+6. <a href="#step-6">Setup the database to run</a>
+7. <a href="#step-7">Run the program</a>
 
 
 <details>
@@ -57,4 +61,53 @@ Steps:
     <pre><code>$ pip install -e .</code></pre>
     <br>
     <p>This tells <code>pip</code> to find <i>pyproject.toml</i> in the current directory and install the project in editable or development mode</p>
+</details>
+
+<details>
+    <summary>
+        <h3 id="step-4"><strong>Step 4: Create folder instance/</strong></h3>
+    </summary>
+    <p>Create a folder named <b>instance/</b> this directory (same as this README.md file) or type the following command:</p>
+    <pre><code>$ mkdir instance</code></pre>
+</details>
+
+<details>
+    <summary>
+        <h3 id="step-5"><strong>Step 5: Create file .env </strong></h3>
+    </summary>
+    <p>Step 1: Create a file named <b>.env</b> in folder <b>instance/</b> you just created</p>
+    <pre><code>$ flask --app src init-db</code></pre>
+    <br>
+    <p>Insert some data of your own in the { } curly brackets</p>
+    <pre><code>SECRET_KEY="{ your_own_random_key }"
+DATABASE="{ absolute path to the database file }"
+SQLALCHEMY_DATABASE_URI = "sqlite:///{ absolute path to the database file }"
+SQLALCHEMY_TRACK_MODIFICATION="False"</code></pre>
+</details>
+
+<details>
+    <summary>
+        <h3 id="step-6"><strong>Step 6: Setup database to run</strong></h3>
+    </summary>
+    <p>Step 1: Use this command to initialize the database:</p>
+    <pre><code>$ flask --app src init-db</code></pre>
+    <br>
+    <p>Step 2: Use this command to insert some fake data into the database:</p>
+    <pre><code>$ flask --app src insert-db</code></pre>
+    <br>
+    <p><strong>Note*:<strong> Use this command to drop all the tables (included all the data) in the database:</p>
+    <pre><code>$ flask --app src drop-db</code></pre>
+    <br>
+</details>
+
+
+<details>
+    <summary>
+        <h3 id="step-7"><strong>Step 7: Run the program</strong></h3>
+    </summary>
+    <p>Step 1: Use this command to run the program:</p>
+    <pre><code>$ flask --app src run --debug</code></pre>
+    <br>
+    <p>Step 2: Open your web browser and type in the url:</p>
+    <pre><code>http://127.0.0.1:5000</code></pre>
 </details>
