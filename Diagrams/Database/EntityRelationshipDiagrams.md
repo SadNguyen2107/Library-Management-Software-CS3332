@@ -25,8 +25,7 @@ erDiagram
 
     AUTHOR {
         INT ID         PK
-        VARCHAR(50) first_name
-        VARCHAR(50) last_name
+        TEXT name 
     }
 
     BOOK {
@@ -135,6 +134,6 @@ erDiagram
     DEPOSIT }o--|| RENEWAL_STATUS: renewal_status
 ```
 OPTIONS:
-* Best Quality Image: [Open this file with Web Browser (Chrome, Edge, Safari) :star:](./mermaid-diagram-2024-08-12-211030.svg)
+* Best Quality Image: [Open this file with Web Browser (Chrome, Edge, Safari) :star:](./mermaid-diagram-2024-08-13-221525.svg)
 
-* PNG Image: [Click here to view the PNG file :framed_picture:](./mermaid-diagram-2024-08-12-211031.png) 
+* PNG Image: [Click here to view the PNG file :framed_picture:](./mermaid-diagram-2024-08-13-221526.png) 
