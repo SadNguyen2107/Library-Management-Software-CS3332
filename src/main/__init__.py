@@ -2,5 +2,5 @@ from flask import Blueprint
 
 bp = Blueprint('main', __name__)
 
-# Registering a Blueprint will also register its routes
+# Register the Routes
 from src.main import routes
