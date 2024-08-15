@@ -78,7 +78,7 @@ def get_all_books(page: int, per_page: int) -> list[dict]:
         page=page,
         per_page=per_page,
         error_out=False,
-    )
+    ).items
 
     # Create a dictionary to hold the aggregate results
     books_dict = defaultdict(

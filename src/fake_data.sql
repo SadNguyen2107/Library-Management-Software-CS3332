@@ -68,17 +68,17 @@ VALUES
 -- BOOK 
 INSERT INTO BOOK (ISBN, title, publisher, edition, publication_date, language, number_of_copies_available, book_cover_image, description)
 VALUES
-('978-3-16-148410-0', 'The Great Gatsby', 'Scribner', 1, '1925-04-10', 'English', 5, 'great_gatsby.jpg', 'A novel set in the Jazz Age on Long Island, focusing on the mysterious millionaire Jay Gatsby.'),
-('978-0-7432-7356-5', 'To Kill a Mockingbird', 'J.B. Lippincott & Co.', 1, '1960-07-11', 'English', 3, 'to_kill_a_mockingbird.jpg', 'A story of racial injustice and childhood innocence set in the American South.'),
-('978-0-452-28423-4', '1984', 'Secker & Warburg', 1, '1949-06-08', 'English', 8, '1984.jpg', 'A dystopian novel that explores the dangers of totalitarianism.'),
-('978-0-553-21311-7', 'The Catcher in the Rye', 'Little, Brown and Company', 1, '1951-07-16', 'English', 7, 'catcher_in_the_rye.jpg', 'A novel about teenage rebellion and angst, narrated by the cynical Holden Caulfield.'),
-('978-0-316-76948-0', 'The Road', 'Alfred A. Knopf', 1, '2006-09-26', 'English', 6, 'the_road.jpg', 'A post-apocalyptic tale of a father and son journeying through a desolate America.'),
-('978-0-141-03019-2', 'Pride and Prejudice', 'T. Egerton', 1, '1813-01-28', 'English', 10, 'pride_and_prejudice.jpg', 'A romantic novel that deals with issues of class, marriage, and morality in 19th-century England.'),
-('978-0-452-27750-3', 'Fahrenheit 451', 'Ballantine Books', 1, '1953-10-19', 'English', 4, 'fahrenheit_451.jpg', 'A novel set in a future where books are banned and "firemen" burn any that are found.'),
-('978-0-7432-7357-2', 'The Da Vinci Code', 'Doubleday', 1, '2003-03-18', 'English', 9, 'da_vinci_code.jpg', 'A mystery thriller that explores an alternative religious history through art and symbology.'),
-('978-0-140-44255-5', 'Animal Farm', 'Secker & Warburg', 1, '1945-08-17', 'English', 12, 'animal_farm.jpg', 'A satirical novella reflecting events leading up to the Russian Revolution of 1917 and then on into the Stalinist era of the Soviet Union.'),
-('978-0-7434-8623-4', 'The Hobbit', 'George Allen & Unwin', 1, '1937-09-21', 'English', 15, 'the_hobbit.jpg', 'A fantasy novel about the journey of Bilbo Baggins, a hobbit who is reluctantly drawn into an adventure to recover treasure guarded by a dragon.'),
-('978-0-06-085398-3', 'Good Omens', 'William Morrow', 1, '1990-05-01', 'English', 5, 'good_omens.jpg', 'A comedic novel about the birth of the son of Satan and the coming of the End Times.');
+('978-3-16-148410-0', 'The Great Gatsby', 'Scribner', 1, '1925-04-10', 'English', 5, '	https://m.media-amazon.com/images/I/61EtTpQI3vL._SY342_.jpg', 'A novel set in the Jazz Age on Long Island, focusing on the mysterious millionaire Jay Gatsby.'),
+('978-0-7432-7356-5', 'To Kill a Mockingbird', 'J.B. Lippincott & Co.', 1, '1960-07-11', 'English', 3, 'https://m.media-amazon.com/images/I/81aY1lxk+9L._SY342_.jpg', 'A story of racial injustice and childhood innocence set in the American South.'),
+('978-0-452-28423-4', '1984', 'Secker & Warburg', 1, '1949-06-08', 'English', 8, 'https://m.media-amazon.com/images/I/71rpa1-kyvL._SY342_.jpg', 'A dystopian novel that explores the dangers of totalitarianism.'),
+('978-0-553-21311-7', 'The Catcher in the Rye', 'Little, Brown and Company', 1, '1951-07-16', 'English', 7, 'https://m.media-amazon.com/images/I/8125BDk3l9L._SY342_.jpg', 'A novel about teenage rebellion and angst, narrated by the cynical Holden Caulfield.'),
+('978-0-316-76948-0', 'The Road', 'Alfred A. Knopf', 1, '2006-09-26', 'English', 6, 'https://m.media-amazon.com/images/I/51M7XGLQTBL._SY342_.jpg', 'A post-apocalyptic tale of a father and son journeying through a desolate America.'),
+('978-0-141-03019-2', 'Pride and Prejudice', 'T. Egerton', 1, '1813-01-28', 'English', 10, 'https://m.media-amazon.com/images/I/81a3sr-RgdL._SY342_.jpg', 'A romantic novel that deals with issues of class, marriage, and morality in 19th-century England.'),
+('978-0-452-27750-3', 'Fahrenheit 451', 'Ballantine Books', 1, '1953-10-19', 'English', 4, 'https://m.media-amazon.com/images/I/61l8LHt4MeL._SY342_.jpg', 'A novel set in a future where books are banned and "firemen" burn any that are found.'),
+('978-0-7432-7357-2', 'The Da Vinci Code', 'Doubleday', 1, '2003-03-18', 'English', 9, 'https://m.media-amazon.com/images/I/811nqCf7o1L._SY342_.jpg', 'A mystery thriller that explores an alternative religious history through art and symbology.'),
+('978-0-140-44255-5', 'Animal Farm', 'Secker & Warburg', 1, '1945-08-17', 'English', 12, 'https://m.media-amazon.com/images/I/71je3-DsQEL._SY342_.jpg', 'A satirical novella reflecting events leading up to the Russian Revolution of 1917 and then on into the Stalinist era of the Soviet Union.'),
+('978-0-7434-8623-4', 'The Hobbit', 'George Allen & Unwin', 1, '1937-09-21', 'English', 15, 'https://m.media-amazon.com/images/I/418jD+Rsd5L._SY445_SX342_.jpg', 'A fantasy novel about the journey of Bilbo Baggins, a hobbit who is reluctantly drawn into an adventure to recover treasure guarded by a dragon.'),
+('978-0-06-085398-3', 'Good Omens', 'William Morrow', 1, '1990-05-01', 'English', 5, 'https://m.media-amazon.com/images/I/61nwsm+zAxL._SY342_.jpg', 'A comedic novel about the birth of the son of Satan and the coming of the End Times.');
 
 
 -- For "The Great Gatsby" (5 copies available)
