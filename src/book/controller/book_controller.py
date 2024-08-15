@@ -53,7 +53,7 @@ class SearchBook(Resource):
         # Get query parameter
         query = request.args.get("query", default="", type=str)
 
-        return search_book_by_query(query)
+        return search_book_by_query(query=query)
 
 
 

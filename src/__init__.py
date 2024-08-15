@@ -12,6 +12,7 @@ where you link all your Flask blueprints together.
 """
 
 from flask import Flask
+from flask_cors import CORS
 
 from config import DevelopmentConfig
 from src.extensions import db
@@ -21,6 +22,9 @@ import commands
 def create_app(config_class=DevelopmentConfig) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
+    
+    # Import CORS
+    CORS(app=app)
 
     #? Initialize Flask Extensions here
     #? =====================================================================
