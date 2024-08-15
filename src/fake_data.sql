@@ -68,7 +68,7 @@ VALUES
 -- BOOK 
 INSERT INTO BOOK (ISBN, title, publisher, edition, publication_date, language, number_of_copies_available, book_cover_image, description)
 VALUES
-('978-3-16-148410-0', 'The Great Gatsby', 'Scribner', 1, '1925-04-10', 'English', 5, '	https://m.media-amazon.com/images/I/61EtTpQI3vL._SY342_.jpg', 'A novel set in the Jazz Age on Long Island, focusing on the mysterious millionaire Jay Gatsby.'),
+('978-3-16-148410-0', 'The Great Gatsby', 'Scribner', 1, '1925-04-10', 'English', 5, 'https://m.media-amazon.com/images/I/61EtTpQI3vL._SY342_.jpg', 'A novel set in the Jazz Age on Long Island, focusing on the mysterious millionaire Jay Gatsby.'),
 ('978-0-7432-7356-5', 'To Kill a Mockingbird', 'J.B. Lippincott & Co.', 1, '1960-07-11', 'English', 3, 'https://m.media-amazon.com/images/I/81aY1lxk+9L._SY342_.jpg', 'A story of racial injustice and childhood innocence set in the American South.'),
 ('978-0-452-28423-4', '1984', 'Secker & Warburg', 1, '1949-06-08', 'English', 8, 'https://m.media-amazon.com/images/I/71rpa1-kyvL._SY342_.jpg', 'A dystopian novel that explores the dangers of totalitarianism.'),
 ('978-0-553-21311-7', 'The Catcher in the Rye', 'Little, Brown and Company', 1, '1951-07-16', 'English', 7, 'https://m.media-amazon.com/images/I/8125BDk3l9L._SY342_.jpg', 'A novel about teenage rebellion and angst, narrated by the cynical Holden Caulfield.'),
