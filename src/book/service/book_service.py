@@ -185,21 +185,21 @@ def get_a_book_by_ISBN(ISBN: str) -> dict:
     return book_dict
 
 
-def search_book_by_query(query: str) -> list[dict]:
+def search_book_by_query(query: str) -> list[dict]:    
     # Search by title
-    books_by_title = Book.query.filter(
-        Book.title.ilike(f"%{query}%"),
-    ).all()
-    
+    books_by_title = Book.query \
+        .filter(Book.title.ilike(f"%{query}%")) \
+        .all()
+            
     # Search by description
-    books_by_description = Book.query.filter(
-        Book.description.ilike(f"%{query}%"),
-    ).all()
+    books_by_description = Book.query \
+        .filter(Book.description.ilike(f"%{query}%")) \
+        .all()
     
     # Search by ISBN
-    books_by_isbn = Book.query.filter(
-        Book.isbn.ilike(f"%{query}%"),
-    ).all()
+    books_by_isbn = Book.query \
+        .filter(Book.isbn.ilike(f"%{query}%")) \
+        .all()
     
     # Search by author name
     books_by_author = db.session.query(Book) \
