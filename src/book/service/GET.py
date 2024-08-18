@@ -1,5 +1,7 @@
-from flask import json
+import requests
+from urllib.parse import quote
 from collections import defaultdict
+
 
 from src.extensions import db
 from src.models.book import Book
@@ -7,6 +9,7 @@ from src.models.book_author import BookAuthor
 from src.models.author import Author
 from src.models.book_genre import BookGenre
 from src.models.book_copy import BookCopy 
+
 
 # ? ==========================================================================
 # ? Utility Function
@@ -149,11 +152,11 @@ def get_all_books(page: int, per_page: int) -> list[dict]:
         ]
     }
 """
-def get_a_book_by_ISBN(ISBN: str) -> dict:
+def get_a_book(ISBN: str) -> dict:
     # Get that book
     book: Book = Book.query.filter(
         Book.isbn == ISBN,
-    ).first_or_404(description="Book not exist.")
+    ).one_or_404(description="Book not exist.")
     
     book_dict = defaultdict(lambda: None)
         
@@ -186,26 +189,29 @@ def get_a_book_by_ISBN(ISBN: str) -> dict:
 
 
 def search_book_by_query(query: str) -> list[dict]:    
+    query_like_statement = f'%{query}%'
+    
     # Search by title
     books_by_title = Book.query \
-        .filter(Book.title.ilike(f"%{query}%")) \
+        .filter(Book.title.like(query_like_statement)) \
         .all()
+
             
     # Search by description
     books_by_description = Book.query \
-        .filter(Book.description.ilike(f"%{query}%")) \
+        .filter(Book.description.ilike(query_like_statement)) \
         .all()
     
     # Search by ISBN
     books_by_isbn = Book.query \
-        .filter(Book.isbn.ilike(f"%{query}%")) \
+        .filter(Book.isbn.ilike(query_like_statement)) \
         .all()
     
     # Search by author name
     books_by_author = db.session.query(Book) \
         .join(BookAuthor, BookAuthor.isbn == Book.isbn) \
         .join(Author, Author.id == BookAuthor.author_id) \
-        .filter(Author.name.ilike(f"%{query}%")) \
+        .filter(Author.name.ilike(query_like_statement)) \
         .all()
         
     # Combine results, remove duplicates
@@ -256,87 +262,35 @@ def search_book_by_query(query: str) -> list[dict]:
 
     return books_list
 
-#! ==========================================================================
-#! POST methods
-def save_new_book(data: json):
-    # Get the book if it has the same ISBN
-    book: Book | None = Book.query.filter(Book.isbn == data["ISBN"]).first()
 
-    # If book exists -> Throw Error
-    if book is not None:
-        response_object = {
-            "status": "fail",
-            "message": "Book already exists.",
-        }
-        return response_object, 409
-
-    # Validate the number of shelf locations
-    if len(data['shelf_locations']) != data['number_of_copies_available']:
-        response_object = {
-            "status": "fail",
-            "message": "The number of shelf locations must match the number of copies available.",
-        }
-        return response_object, 400
-
-    # If not exist -> Add that book
-    # Add to the BOOK table
-    new_book: Book = Book(
-        isbn=data["ISBN"], 
-        title=data["title"],
-        publisher=data['publisher'],
-        edition=data['edition'],
-        publication_date=data['publication_date'],
-        language=data['language'],
-        number_of_copies_available=data['number_of_copies_available'],
-        book_cover_image=data['book_cover_image'],
-        description=data['description'],
-    )
-    db.session.add(new_book)
-
-    # Add to the AUTHOR table and BOOK_AUTHOR table
-    for author_name in data['authors']:
-        author = Author.query.filter(Author.name == author_name).first()
-        if not author:
-            # If the author does not exist, create a new one
-            author = Author(name=author_name)
-            db.session.add(author)
-            db.session.flush()  # To get the author ID before committing
-
-        # Create a relationship in the BOOK_AUTHOR table
-        new_book_author = BookAuthor(isbn=data['ISBN'], author_id=author.ID)
-        db.session.add(new_book_author)
-
-    # Add to the BOOK_GENRES table
-    for genre_name in data['genres']:
-        genre = BookGenre.query.filter(BookGenre.genre == genre_name).first()
-        if not genre:
-            # If the genre does not exist, handle this accordingly
-            response_object = {
-                "status": "fail",
-                "message": f"Genre '{genre_name}' does not exist.",
-            }
-            return response_object, 400
-
-        new_book_genre = BookGenre(isbn=data['ISBN'], genre=genre_name)
-        db.session.add(new_book_genre)
-
-    # Add to the BOOK_COPY table
-    for shelf_location in data['shelf_locations']:
-        for location, status in shelf_location.items():
-            new_book_copy = BookCopy(
-                isbn=data['ISBN'],
-                shelf_location=location,
-                book_status=status,
-            )
-            db.session.add(new_book_copy)
-
-    # Commit all the changes to the database
-    db.session.commit()
-
-    response_object = {
-        "status": "success",
-        "message": "Book successfully added.",
+def get_book_title_by_isbn(isbn: str):
+    # URL-encode the string
+    # encoded_isbn = quote(isbn)
+    
+    read_isbn_api = f'https://openlibrary.org/isbn/{isbn}'
+    print(read_isbn_api)
+    headers = {
+        "accept": "application/json"
     }
-    return response_object, 201
-
-
+    
+    response = requests.get(read_isbn_api, headers=headers)
+    
+    # Check if the request was successful
+    if response.status_code != 200:
+        print(f"Request failed with status code: {response.status_code}")
+        print(response.text)
+        return {
+            "message": "Invalid ISBN",
+            "book_title": "None"
+        }, 404
+    
+    
+    # Get the json data
+    json_data: dict = response.json()
+    print(json_data)
+    # Check for the title
+    book_title_with_that_isbn = json_data['title'] 
+    return {
+        "message": "Valid ISBN",
+        "book_title": f"{book_title_with_that_isbn}"
+    }, 200

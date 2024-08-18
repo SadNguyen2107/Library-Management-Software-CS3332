@@ -11,3 +11,6 @@ class UserDto:
         'user_role': fields.String(required=True, description='User role'),
         'account_status': fields.String(required=True, desription='User account status'),
     })
+    
+    
+    
