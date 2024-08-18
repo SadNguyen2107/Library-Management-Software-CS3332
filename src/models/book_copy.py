@@ -1,5 +1,5 @@
 from src.extensions import db
-
+from src.models.book_status import BookStatus
 
 class BookCopy(db.Model):
     __tablename__ = "BOOK_COPY"

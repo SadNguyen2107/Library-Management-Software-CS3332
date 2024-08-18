@@ -47,7 +47,7 @@ Steps:
     <p><strong>PowerShell:</strong></p>
     <pre><code>$ .venv\Scripts\Activate.ps1</code></pre>
     <p><strong>Bash:</strong></p>
-    <pre><code>$ source .venv/Scripts/activate</code></pre>
+    <pre><code>$ source .venv/bin/activate</code></pre>
     <br>
     <p><strong>NOTE:</strong>To deactivate the python virtual environment in <code>Command Prompt</code>, type:</p>
     <pre><code>$ .venv\Scripts\deactivate.bat</code></pre>
@@ -76,7 +76,7 @@ Steps:
         <h3 id="step-5"><strong>Step 5: Create file .env </strong></h3>
     </summary>
     <p>Step 1: Create a file named <b>.env</b> in folder <b>instance/</b> you just created</p>
-    <pre><code>$ flask --app src init-db</code></pre>
+    <pre><code>$ touch instance/.env</code></pre>
     <br>
     <p>Insert some data of your own in the { } curly brackets</p>
     <pre><code>SECRET_KEY="{ your_own_random_key }"

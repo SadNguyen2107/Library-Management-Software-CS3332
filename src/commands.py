@@ -92,6 +92,18 @@ def insert_fake_data_command() -> None:
     click.echo("Inserted fake data into the database.")
 
 
+@click.command("reset-db")
+def reset_db_command() -> None:
+    # Drop the database
+    drop_db()
+    
+    # Init the database
+    init_db()
+    
+    # Insert Fake data
+    insert_fake_data()
+    click.echo("Reset the database to the initial phase.")
+
 def init_app(app: Flask) -> None:
     app.app_context().push()
     
@@ -99,6 +111,8 @@ def init_app(app: Flask) -> None:
     app.cli.add_command(init_db_command)
     app.cli.add_command(drop_db_command)
     app.cli.add_command(insert_fake_data_command)
+    
+    app.cli.add_command(reset_db_command)
     
     # Close the Database (If Needed)
     close_db()

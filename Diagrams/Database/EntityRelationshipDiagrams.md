@@ -12,15 +12,15 @@ All entities might be appear:
 ---
 erDiagram
     USER {
-        INT ID         PK
+        INT ID         PK       "HUST-ID 8 digits from 2016 to 2024"
         TEXT name
         TEXT address
-        TEXT phone_number
-        TEXT email_address
-        VARCHAR(10) membership_type     FK      "Student || Faculty || Public"  
-        VARCHAR(10) user_role           FK      "Admin || Librarian || Member"
+        TEXT phone_number       "10 digits"
+        TEXT email_address      "Ex: abc@gmail.com"
+        VARCHAR(10) membership_type     FK      "Public || Premium"  
+        VARCHAR(10) user_role           FK      "Librarian || Member"
         VARCHAR(10) account_status       "Active || Inactive"
-        TEXT password
+        TEXT password           "Min 8 characters = 1 letter uppercase + 1 letter lowercase + 1 digit + 1 special character" SHA
     }
 
     AUTHOR {
@@ -32,10 +32,10 @@ erDiagram
         TEXT ISBN                       PK            "UNIQUE"
         TEXT title
         TEXT publisher
-        TEXT edition
+        INT edition                             "Must larger than 0"                
         DATE publication_date
         TEXT language
-        INT number_of_copies_available
+        INT number_of_copies_available          "Must larger than 0"
         TEXT book_cover_image "HTTPS URL"
         TEXT description
     }
@@ -67,12 +67,12 @@ erDiagram
     }
 
     DEPOSIT {
-        INT borrower_id PK, FK
-        INT book_id    PK, FK
-        DATE issue_date
-        DATE due_date
-        DATE return_date
-        INT overdue_fines
+        INT borrower_id PK, FK          
+        INT book_id    PK, FK           
+        DATE issue_date                 
+        DATE due_date                   
+        DATE return_date                
+        INT overdue_fines               
         OPTION renewal_status    FK   "First-time || Renewed"                
     }
 
