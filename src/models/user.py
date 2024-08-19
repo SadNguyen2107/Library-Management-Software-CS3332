@@ -1,25 +1,17 @@
 from src.extensions import db
 
 
+# USER Model
 class User(db.Model):
-    __tablename__ = "USER"
-
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
-    address = db.Column(db.String, default="None")
+    address = db.Column(db.String, default='None')
     phone_number = db.Column(db.String, nullable=False, unique=True)
     email_address = db.Column(db.String, nullable=False, unique=True)
-    membership_type = db.Column(
-        db.String(10),
-        db.ForeignKey("MEMBERSHIP_TYPE.type"),
-        default="Public",
-    )
-    user_role = db.Column(
-        db.String(10),
-        db.ForeignKey("USER_ROLE.role"),
-        default="Member",
-    )
-    account_status = db.Column(db.String(10), default="Active")
+    membership_type = db.Column(db.String(50), db.ForeignKey('membership_type.type', onupdate="CASCADE", ondelete="SET NULL"), default='Public')
+    user_role = db.Column(db.String(50), db.ForeignKey('user_role.role', onupdate="CASCADE", ondelete="SET NULL"), default='Member')
+    account_status = db.Column(db.String(50), default='Active')
     password = db.Column(db.String, nullable=False)
 
     def __repr__(self):

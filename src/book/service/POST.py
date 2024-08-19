@@ -7,7 +7,7 @@ from src.extensions import db
 from src.models.book import Book
 from src.models.book_author import BookAuthor
 from src.models.author import Author
-from src.models.book_genre import BookGenre
+from src.models.book_genre import BookGenres
 from src.models.book_copy import BookCopy 
 
 
@@ -123,7 +123,7 @@ def save_new_book(data: json):
             # Add to the BOOK_GENRES table
             if 'genres' in data:
                 for genre_name in data['genres']:
-                    new_book_genre = BookGenre(isbn=data['ISBN'], genre=genre_name)
+                    new_book_genre = BookGenres(isbn=data['ISBN'], genre=genre_name)
                     db.session.add(new_book_genre)
 
             # Add to the BOOK_COPY table

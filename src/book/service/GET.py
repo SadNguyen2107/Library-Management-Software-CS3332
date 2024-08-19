@@ -1,5 +1,4 @@
 import requests
-from urllib.parse import quote
 from collections import defaultdict
 
 
@@ -7,7 +6,7 @@ from src.extensions import db
 from src.models.book import Book
 from src.models.book_author import BookAuthor
 from src.models.author import Author
-from src.models.book_genre import BookGenre
+from src.models.book_genre import BookGenres
 from src.models.book_copy import BookCopy 
 
 
@@ -27,8 +26,8 @@ def fill_authors_list(book_dict: defaultdict, isbn: str) -> None:
 
 def fill_genres_list(book_dict: defaultdict, isbn: str) -> None:
     # Get the list of genre according to the isbn
-    list_of_genres = db.session.query(BookGenre) \
-        .filter(BookGenre.isbn == isbn) \
+    list_of_genres = db.session.query(BookGenres) \
+        .filter(BookGenres.isbn == isbn) \
         .all()
     
     # Append to the genres list
@@ -156,7 +155,7 @@ def get_a_book(ISBN: str) -> dict:
     # Get that book
     book: Book = Book.query.filter(
         Book.isbn == ISBN,
-    ).one_or_404(description="Book not exist.")
+    ).first_or_404(description="Book not exist.")
     
     book_dict = defaultdict(lambda: None)
         

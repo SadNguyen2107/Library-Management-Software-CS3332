@@ -8,7 +8,7 @@ from src.extensions import db
 from src.models.book import Book
 from src.models.book_author import BookAuthor
 from src.models.author import Author
-from src.models.book_genre import BookGenre
+from src.models.book_genre import BookGenres
 from src.models.genre import Genre
 from src.models.book_copy import BookCopy 
 from src.models.deposit import Deposit
@@ -28,7 +28,7 @@ def update_a_book(original_isbn: str, new_data: json):
             # Check that book with original_isbn to update
             book = Book.query \
                 .filter(Book.isbn == original_isbn) \
-                .one_or_404("Book not found.")
+                .first_or_404("Book not found.")
                 
             # Check whether that ISBN whether is valid
             read_isbn_api = f'https://openlibrary.org/isbn/{new_data["ISBN"]}'
@@ -104,7 +104,7 @@ def update_a_book(original_isbn: str, new_data: json):
             if new_isbn != original_isbn:
                 # Update all related records with the new ISBN
                 BookAuthor.query.filter_by(isbn=original_isbn).update({"isbn": new_isbn})
-                BookGenre.query.filter_by(isbn=original_isbn).update({"isbn": new_isbn})
+                BookGenres.query.filter_by(isbn=original_isbn).update({"isbn": new_isbn})
                 BookCopy.query.filter_by(isbn=original_isbn).update({"isbn": new_isbn})
                 Deposit.query.filter(Deposit.book_id.in_(
                     db.session.query(BookCopy.id).filter_by(isbn=original_isbn)
@@ -139,13 +139,13 @@ def update_a_book(original_isbn: str, new_data: json):
 
             # Update genres
             if 'genres' in new_data:
-                BookGenre.query.filter_by(isbn=new_isbn).delete(synchronize_session=False)
+                BookGenres.query.filter_by(isbn=new_isbn).delete(synchronize_session=False)
                 for genre_name in new_data['genres']:
                     genre = Genre.query.filter_by(genre=genre_name).first()
                     if not genre:
                         genre = Genre(genre=genre_name)
                         db.session.add(genre)
-                    book_genre = BookGenre(isbn=new_isbn, genre=genre.genre)
+                    book_genre = BookGenres(isbn=new_isbn, genre=genre.genre)
                     db.session.add(book_genre)
 
 
