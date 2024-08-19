@@ -1,18 +1,19 @@
 from src.extensions import db
 
 
+# RESERVATION Model
 class Reservation(db.Model):
-    __tablename__ = "RESERVATION"
-
+    __tablename__ = 'reservation'
     reservation_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    book_id = db.Column(db.Integer, db.ForeignKey("BOOK_COPY.id"), nullable=False)
-    borrower_id = db.Column(db.Integer, db.ForeignKey("USER.id"), nullable=False)
-    reservation_date = db.Column(db.Date, nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('book_copy.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    borrower_id = db.Column(db.Integer, db.ForeignKey('user.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    reservation_date = db.Column(db.Date, nullable=False, default=date.today)
     expiration_date = db.Column(db.Date, nullable=False)
-    reservation_status = db.Column(
-        db.String(10),
-        db.ForeignKey("RESERVATION_STATUS.status"),
-        default="Active",
+    reservation_status = db.Column(db.String(50), db.ForeignKey('reservation_status.status', onupdate="CASCADE", ondelete="SET NULL"), default='Active')
+
+    # Ensure expiration_date is after reservation_date
+    __table_args__ = (
+        db.CheckConstraint('expiration_date > reservation_date', name='check_reservation_dates'),
     )
 
     def __repr__(self):

@@ -1,5 +1,3 @@
--- Active: 1723480263563@@127.0.0.1@3306
-
 -- USER 
 INSERT INTO USER (name, address, phone_number, email_address, membership_type, user_role, account_status, password)
 VALUES
@@ -241,9 +239,9 @@ VALUES
 (10, 10, '2024-07-10', '2024-07-19', NULL, 0, 'Renewed');
 
 
--- GENRE
 INSERT INTO GENRE (genre, description)
 VALUES
+-- Existing Genres
 ('Classic', 'Timeless works of literature that have been revered through the ages.'),
 ('Historical', 'Works of fiction set in a historical period.'),
 ('Dystopian', 'Depicts an imagined society that is dehumanizing and frightening.'),
@@ -253,7 +251,48 @@ VALUES
 ('Thriller', 'Books that are full of suspense and excitement.'),
 ('Satire', 'Literature that uses humor and irony to criticize or mock.'),
 ('Fantasy', 'Fiction that includes magical or supernatural elements.'),
-('Mystery', 'Stories revolving around the solving of a crime or unraveling secrets.');
+('Mystery', 'Stories revolving around the solving of a crime or unraveling secrets.'),
+('Adventure', 'Exciting stories with a focus on exploration and physical action.'),
+('Biography', 'Books that tell the life story of a real person, often inspiring.'),
+('Autobiography', 'A self-written account of the author''s own life.'),
+('Memoir', 'A narrative composed from personal experience.'),
+('Horror', 'Literature intended to scare, unsettle, or horrify the reader.'),
+('Young Adult', 'Books primarily written for an audience of teenagers.'),
+('Children''s', 'Stories written for young children, often with educational themes.'),
+('Drama', 'Serious narratives dealing with emotional and relational conflicts.'),
+('Poetry', 'Literary work in which special intensity is given to the expression of feelings and ideas by the use of distinctive style and rhythm.'),
+('Graphic Novel', 'A novel in comic-strip format.'),
+('Historical Fiction', 'Fictional stories set in real historical settings with imaginative characters and events.'),
+('Crime', 'Stories centered around criminal acts and their investigation.'),
+('Detective', 'A subgenre of crime fiction focusing on the detective solving a mystery.'),
+('Western', 'Stories set in the American Old West, often featuring cowboys and outlaws.'),
+('Philosophical', 'Works that explore fundamental questions about life, ethics, and society.'),
+('Spiritual', 'Books dealing with religious or spiritual themes.'),
+('Self-help', 'Books written to instruct readers on solving personal problems.'),
+('Cookbook', 'Books containing a collection of recipes, cooking techniques, or information on food preparation.'),
+('Travel', 'Books about travel experiences, guides, and adventures in different places.'),
+('Humor', 'Books intended to entertain and amuse the reader through humor.'),
+('Non-fiction', 'Literature based on factual information and real events.'),
+('Essays', 'Short works that explore a topic or theme in a personal or formal manner.'),
+('Anthology', 'A collection of works by different authors compiled into one volume.'),
+('Epic', 'Long narrative poems often dealing with heroic deeds and events of historical significance.'),
+('Gothic', 'Literature combining elements of horror and romance, often set in gloomy and mysterious environments.'),
+('Magical Realism', 'Literature in which magical elements are a natural part of a realistic environment.'),
+('Urban Fantasy', 'Fantasy stories set in a modern, urban setting where magic and the supernatural exist.'),
+('Paranormal', 'Stories involving supernatural elements like ghosts, vampires, and other entities beyond the normal scope of human experience.'),
+('Psychological Thriller', 'Thrillers that focus on the mental states of characters, often with an element of suspense and surprise.'),
+('Chick Lit', 'Fiction that addresses issues of modern womanhood, often with humor and romance.'),
+('LGBTQ+', 'Literature that explores themes and stories of LGBTQ+ communities.'),
+('Religious', 'Books that discuss religious beliefs, practices, and experiences.'),
+('Political', 'Literature that explores political ideologies, systems, and events, often critically.'),
+('War', 'Stories centered around conflicts, battles, and the experiences of soldiers.'),
+('Coming-of-Age', 'Stories focusing on the growth of a protagonist from youth to adulthood.'),
+('Steampunk', 'A subgenre of science fiction or fantasy featuring steam-powered machinery and Victorian-era settings.'),
+('Cyberpunk', 'Science fiction focused on future dystopian societies dominated by computer technology and artificial intelligence.'),
+('Romantic Comedy', 'Stories that blend romance with humorous elements, often focusing on light-hearted romantic entanglements.'),
+('Erotica', 'Literature focused on sensual or erotic themes, often with explicit content.');
+
+
 
 
 -- MEMBERSHIP_TYPE
