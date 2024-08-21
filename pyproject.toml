@@ -6,7 +6,9 @@ dependencies = [
     "flask",
     "Flask-Cors",
     "flask-restx",         
-    "Flask-SQLAlchemy",        
+    "Flask-SQLAlchemy",  
+    "Flask-Login",      
     "python-dotenv",
     "requests",
+    "pyotp",
 ]

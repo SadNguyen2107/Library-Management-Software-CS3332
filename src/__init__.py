@@ -14,12 +14,17 @@ where you link all your Flask blueprints together.
 from flask import Flask
 from flask_cors import CORS
 
-from config import DevelopmentConfig
-from src.extensions import db
+from config import ProductionConfig
+from src.extensions import (
+    db,
+    login_manager,
+    mail,
+)
+
 import commands
 
 
-def create_app(config_class=DevelopmentConfig) -> Flask:
+def create_app(config_class=ProductionConfig) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
     
@@ -28,8 +33,14 @@ def create_app(config_class=DevelopmentConfig) -> Flask:
 
     #? Initialize Flask Extensions here
     #? =====================================================================
+    # Add Mail extension
+    mail.init_app(app)
+    
     # Add SQLAlchemy extension
     db.init_app(app)
+
+    # Add Authentication
+    login_manager.init_app(app)
     
     # Init the commands to interact
     commands.init_app(app)

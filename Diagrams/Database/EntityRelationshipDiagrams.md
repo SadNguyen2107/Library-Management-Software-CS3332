@@ -11,129 +11,130 @@ All entities might be appear:
     title: Library Database
 ---
 erDiagram
-    USER {
-        INT ID         PK       "HUST-ID 8 digits from 2016 to 2024"
-        TEXT name
-        TEXT address
-        TEXT phone_number       "10 digits"
-        TEXT email_address      "Ex: abc@gmail.com"
-        VARCHAR(10) membership_type     FK      "Public || Premium"  
-        VARCHAR(10) user_role           FK      "Librarian || Member"
-        VARCHAR(10) account_status       "Active || Inactive"
-        TEXT password           "Min 8 characters = 1 letter uppercase + 1 letter lowercase + 1 digit + 1 special character" SHA
-    }
-
-    AUTHOR {
-        INT ID         PK
-        TEXT name 
-    }
-
-    BOOK {
-        TEXT ISBN                       PK            "UNIQUE"
-        TEXT title
-        TEXT publisher
-        INT edition                             "Must larger than 0"                
-        DATE publication_date
-        TEXT language
-        INT number_of_copies_available          "Must larger than 0"
-        TEXT book_cover_image "HTTPS URL"
-        TEXT description
-    }
-
-    BOOK_GENRES {
-        TEXT ISBN       PK, FK
-        TEXT genre      PK,FK
-    }
-
-    BOOK_AUTHOR {
-        TEXT ISBN       PK, FK
-        INT author_id      PK, FK
-    }
-    
-    BOOK_COPY {
-        INT ID     PK
-        TEXT ISBN   FK
-        TEXT shelf_location             "UNIQUE"
-        OPTION book_status      FK      "Available || Borrowed || Reserved"
-    }
-
-    RESERVATION {
-        INT reservation_id     PK
-        INT book_id            FK
-        INT borrower_id        FK
-        DATE reservation_date   
-        DATE expiration_date
-        OPTION reservation_status   FK  "Active || Cancelled || Fulfilled"
-    }
-
-    DEPOSIT {
-        INT borrower_id PK, FK          
-        INT book_id    PK, FK           
-        DATE issue_date                 
-        DATE due_date                   
-        DATE return_date                
-        INT overdue_fines               
-        OPTION renewal_status    FK   "First-time || Renewed"                
-    }
-
     GENRE {
-        VARCHAR(10) genre   PK
+        VARCHAR(50) genre PK
         TEXT description
     }
 
-%% Info Table
     MEMBERSHIP_TYPE {
-        %% Available Type: "Student || Faculty || Public"
-        VARCHAR(10) type    PK
-        TEXT description
+        %% Available Type: "Public || Premium"
+        VARCHAR(50) type PK
+        TEXT description NOT NULL
     }
 
     USER_ROLE {
-        %% Available role: "Admin || Librarian || Member"
-        VARCHAR(10) role    PK
-        TEXT description
+        %% Available role: "Librarian || Member"
+        VARCHAR(50) role PK
+        TEXT description NOT NULL
     }
 
     BOOK_STATUS {
-        %% Available status: "Available || Borrowed || Reserved"
-        VARCHAR(10) status  PK
-        TEXT description
+        %% Available status: "Available || Checked Out || Reserved || Damaged"
+        VARCHAR(50) status PK
+        TEXT description NOT NULL
     }
 
     RESERVATION_STATUS {
-        %% Available status: "Active || Cancelled || Fulfilled"
-        VARCHAR(10) status  PK
-        TEXT description
+        %% Available status: "Active || Expired || Cancelled"
+        VARCHAR(50) status PK
+        TEXT description NOT NULL
     }
 
     RENEWAL_STATUS {
-        %% Available status:    "First-time || Renewed"  
-        VARCHAR(10) status PK
-        TEXT description
+        %% Available status: "First-time || Renewed || Overdue"
+        VARCHAR(50) status PK
+        TEXT description NOT NULL
+    }
+
+    USER {
+        INTEGER ID PK   "HUST-ID 8 digits from 2016 to 2024"       
+        TEXT name "NOT NULL"
+        TEXT address
+        TEXT phone_number "NOT NULL UNIQUE   Must contain 10 digits"
+        TEXT email_address "NOT NULL UNIQUE   Ex: *@gmail.com"
+        VARCHAR(50) membership_type FK       "DEFAULT Public"
+        VARCHAR(50) user_role FK    "DEFAULT Member"
+        VARCHAR(50) account_status "DEFAULT Active"
+        TEXT password "NOT NULL  Min 8 characters = 1 letter uppercase + 1 letter lowercase + 1 digit + 1 special character"
+    }
+
+
+    AUTHOR {
+        INTEGER ID PK
+        TEXT name NOT NULL
+    }
+
+
+    BOOK {
+        VARCHAR(13) ISBN PK
+        TEXT title "NOT NULL"
+        TEXT publisher "NOT NULL"
+        INTEGER edition "NOT NULL Must larger than 0"
+        DATE publication_date "NOT NULL"
+        TEXT language "NOT NULL"
+        INTEGER number_of_copies_available "NOT NULL Must larger than 0"
+        TEXT book_cover_image
+        TEXT description "NOT NULL"
+    }
+
+    BOOK_GENRES {
+        VARCHAR(13) ISBN PK,FK
+        VARCHAR(50) genre PK,FK
+    }
+
+    BOOK_AUTHOR {
+        VARCHAR(13) ISBN PK,FK
+        INTEGER author_id PK,FK
+    }
+
+    BOOK_COPY {
+        INTEGER ID PK
+        VARCHAR(13) ISBN FK
+        TEXT shelf_location "NOT NULL UNIQUE"
+        VARCHAR(50) book_status FK "DEFAULT Available"
+    }
+
+    RESERVATION {
+        INTEGER reservation_id PK
+        INTEGER book_id FK
+        INTEGER borrower_id FK
+        DATE reservation_date "NOT NULL"
+        DATE expiration_date "NOT NULL"
+        VARCHAR(50) reservation_status FK "DEFAULT Active"
+    }
+
+    DEPOSIT {
+        INTEGER borrower_id PK,FK
+        INTEGER book_id PK,FK
+        DATE issue_date "NOT NULL"
+        DATE due_date "NOT NULL"
+        DATE return_date
+        INTEGER overdue_fines "DEFAULT 0"
+        VARCHAR(50) renewal_status FK "DEFAULT First-time"
     }
 
 %% Relationship
-    BOOK_COPY ||--o{ DEPOSIT: book_id
-    BOOK_COPY ||--o| RESERVATION: book_id
-    BOOK_COPY }|--|| BOOK_STATUS: book_status
-    AUTHOR ||--|{ BOOK_AUTHOR: author_id
+    USER ||--o{ MEMBERSHIP_TYPE: membership_type
+    USER ||--o{ USER_ROLE: user_role
 
-    BOOK ||--|{ BOOK_COPY: ISBN
-    BOOK ||--|{ BOOK_AUTHOR: ISBN
-    BOOK ||--|{ BOOK_GENRES: ISBN
+    BOOK_GENRES }o--|| BOOK: genre
+    BOOK_GENRES }o--|| GENRE: ISBN
 
-    GENRE ||--|{ BOOK_GENRES: genre
+    BOOK_AUTHOR }o--|| BOOK: ISBN
+    BOOK_AUTHOR }o--|| AUTHOR: author_id
 
-    USER ||--o{ DEPOSIT: borrower_id
-    USER ||--o{ RESERVATION: borrower_id
-    USER }|--|| MEMBERSHIP_TYPE: membership_type
-    USER }|--|| USER_ROLE: user_role
+    BOOK_COPY }o--|| BOOK: ISBN
+    BOOK_COPY }o--|| BOOK_STATUS: book_status
 
-    RESERVATION }o--|| RESERVATION_STATUS: reservation_status
+    RESERVATION }o--|| BOOK_COPY: book_id
+    RESERVATION }o--|| USER: borrower_id
 
+    DEPOSIT }o--|| USER : borrower_id
+    DEPOSIT }o--|| BOOK_COPY : book_id
     DEPOSIT }o--|| RENEWAL_STATUS: renewal_status
+    RESERVATION }o--|| RESERVATION_STATUS: reservation_status
 ```
 OPTIONS:
-* Best Quality Image: [Open this file with Web Browser (Chrome, Edge, Safari) :star:](./mermaid-diagram-2024-08-13-221525.svg)
+* Best Quality Image: [Open this file with Web Browser (Chrome, Edge, Safari) :star:](./mermaid-diagram-2024-08-19-170220.svg)
 
-* PNG Image: [Click here to view the PNG file :framed_picture:](./mermaid-diagram-2024-08-13-221526.png) 
+* PNG Image: [Click here to view the PNG file :framed_picture:](./mermaid-diagram-2024-08-19-170221.png) 
