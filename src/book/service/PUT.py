@@ -92,7 +92,8 @@ def update_a_book(original_isbn: str, new_data: json):
                     status = shelf_location.get('status', 'Available')
 
                     # Check if the shelf location is occupied
-                    if BookCopy.query.filter_by(shelf_location=location).first():
+                    book_copy = BookCopy.query.filter_by(shelf_location=location).first()
+                    if book_copy.shelf_location != location:        # If different location -> Throw error
                         return {
                             "message": f"Shelf location {location} is already occupied."
                         }, 400

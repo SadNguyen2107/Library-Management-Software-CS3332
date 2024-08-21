@@ -1,12 +1,16 @@
 from flask import request
 from flask_restx import Resource
 
+from flask_login import login_required
+from src.authorization import librarian_required
 from src.book.util.dto import BookDto
 from src.book.service.GET import (
     get_book_title_by_isbn,
     get_all_books,
     get_a_book,
-    search_book_by_query 
+    search_book_by_query,
+    get_all_genres,
+    get_books_filter_by_genres,
 )
 from src.book.service.POST import (
     save_new_book,
@@ -21,6 +25,7 @@ from src.book.service.DELETE import (
 api = BookDto.api
 _book = BookDto.book_dto
 _book_detail = BookDto.book_detail_dto
+_genre_list = BookDto.genre_list_dto
 
 
 # BOOK
@@ -28,6 +33,8 @@ _book_detail = BookDto.book_detail_dto
 class Book(Resource):
     
     @api.doc("Add a new book")
+    @login_required
+    @librarian_required
     @api.response(201, "Book successfully added.")
     @api.response(400, "The number of shelf locations must match the number of copies available.")
     @api.response(400, "Genre not exist.")
@@ -50,6 +57,36 @@ class Isbn(Resource):
         """Get the book_title given its ISBN"""
         isbn = request.args.get('ISBN', default=None, type=str)
         return get_book_title_by_isbn(isbn)
+
+
+@api.route('/book/genres')
+class Genres(Resource):
+
+    @api.doc("Get all the available genres in the database")
+    @api.param("page", "The current page", default=1, type=int)
+    @api.param("per_page", "The maximum number of items on a page", default=5, type=int)
+    @api.marshal_with(_genre_list)
+    def get(self):
+        """Get all the available genres in the database"""
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 5, type=int)
+        return get_all_genres(page, per_page) 
+    
+    
+@api.route('/book/genres/search')
+class Genres(Resource):
+
+    @api.doc("Search the books by amount of filter")
+    @api.param("page", "The current page", default=1, type=int)
+    @api.param("per_page", "The maximum number of items on a page", default=5, type=int)
+    @api.expect(_genre_list, validate=True)
+    @api.marshal_list_with(_book, envelope='books')
+    def post(self):
+        """Get all the available genres in the database"""
+        data = request.json
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 5, type=int)
+        return get_books_filter_by_genres(data=data, page=page, per_page=per_page)
 
 
 @api.route("/book/isbn/<string:ISBN>")
@@ -76,6 +113,8 @@ class Book(Resource):
     
     
     @api.doc("Delete the book")
+    @login_required
+    @librarian_required
     @api.response(204, "Book deleted.")
     @api.response(400, "Cannot update the book. All copies must be returned first.")
     def delete(self, ISBN):
@@ -96,7 +135,6 @@ class BookList(Resource):
         # Get query parameter
         page = request.args.get("page", default=1, type=int)
         per_page = request.args.get("per_page", default=5, type=int)
-
         return get_all_books(page=page, per_page=per_page)
 
 

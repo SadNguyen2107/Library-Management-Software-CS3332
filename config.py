@@ -36,6 +36,8 @@ class Config:
     DATABASE = None
     SQLALCHEMY_DATABASE_URI = None
     SQLALCHEMY_TRACK_MODIFICATION = False
+    USER=None
+    PASSWORD=None
 
 class DevelopmentConfig(Config):
     SECRET_KEY = 'dev'
@@ -58,7 +60,8 @@ class ProductionConfig(Config):
     DATABASE = CONFIG["DATABASE"]
     SQLALCHEMY_DATABASE_URI = CONFIG["SQLALCHEMY_DATABASE_URI"]
     SQLALCHEMY_TRACK_MODIFICATION = bool(CONFIG["SQLALCHEMY_TRACK_MODIFICATION"])
-    
+    USER = CONFIG['USER']
+    PASSWORD = CONFIG['OUTLOOK_PASSWORD']
     
 # Configuration by name
 config_by_name = {

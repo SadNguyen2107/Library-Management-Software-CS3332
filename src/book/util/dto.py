@@ -4,8 +4,9 @@ class BookDto:
     api = Namespace('book', description='book related operations')
     # Define the DTO for a single shelf location
     shelf_location_dto = api.model('ShelfLocation', {
-        'shelf': fields.String(attribute=lambda x: list(x.keys())[0]),
-        'status': fields.String(attribute=lambda x: list(x.values())[0])
+        'book_id': fields.Integer(readonly=True, description='The Book ID in the library'),
+        'shelf': fields.String(required=True, description='The book shelf location to put in'),
+        'status': fields.String(required=True, description='The status of that book at that shelf_location')
     })
 
     # Define the DTO for a single book
@@ -35,4 +36,9 @@ class BookDto:
         'book_cover_image': fields.String(description='The URL for the book cover image'),
         'description': fields.String(description='A brief description of the book'),
         'shelf_locations': fields.List(fields.Nested(shelf_location_dto), description='List of shelf locations and their status'),
+    })
+    
+    
+    genre_list_dto = api.model('GenreList', {
+        'genres': fields.List(fields.String, description="List of genre names")
     })

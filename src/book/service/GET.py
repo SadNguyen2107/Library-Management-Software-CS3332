@@ -8,7 +8,7 @@ from src.models.book_author import BookAuthor
 from src.models.author import Author
 from src.models.book_genre import BookGenres
 from src.models.book_copy import BookCopy 
-
+from src.models.genre import Genre
 
 # ? ==========================================================================
 # ? Utility Function
@@ -43,7 +43,9 @@ def fill_shelf_location_list(book_dict: defaultdict, isbn: str) -> None:
     # Append to the shelf_locations list
     for shelf_location in list_of_shelf_locations:
         book_dict['shelf_locations'].append({
-            shelf_location.shelf_location: shelf_location.book_status
+            'book_id': shelf_location.id,
+            'shelf': shelf_location.shelf_location,
+            'status': shelf_location.book_status,
         })
 
 # ? ==========================================================================
@@ -293,3 +295,62 @@ def get_book_title_by_isbn(isbn: str):
         "message": "Valid ISBN",
         "book_title": f"{book_title_with_that_isbn}"
     }, 200
+    
+
+def get_all_genres(page: int, per_page: int):
+    genres = Genre.query \
+        .order_by(Genre.genre.asc()) \
+        .paginate(page=page, per_page=per_page, error_out=False)
+    
+    # Return only the genre names as a list
+    genres = [genre.genre for genre in genres.items]
+    
+    return {'genres': genres}, 200
+
+
+def get_books_filter_by_genres(data: dict, page: int, per_page: int):
+    genres = data.get('genres', [])
+    if not genres:
+        return {"message": "No genres provided"}, 400
+    
+    # Query books that match the genres
+    books_query = Book.query \
+        .join(BookGenres, Book.isbn == BookGenres.isbn) \
+        .filter(BookGenres.genre.in_(genres)) \
+        .paginate(page=page, per_page=per_page, error_out=False)
+        
+    books = books_query.items
+    
+    if not books:
+        return {"message": "No books found for the given genres"}, 404
+    
+    # Convert books into the expected output format
+    book_list = []
+    for book in books:
+        book_dict = { 
+            "ISBN": book.isbn,
+            "title": book.title,
+            "edition": book.edition,
+            "language": book.language,
+            "book_cover_image": book.book_cover_image,
+            "description": book.description,
+            "genres": [],
+            "authors": [],
+            "shelf_locations": []
+        }
+        
+        # Fill the Authors List
+        fill_authors_list(book_dict=book_dict, isbn=book.isbn)
+
+        # Fill the Genres List
+        fill_genres_list(book_dict=book_dict, isbn=book.isbn)
+
+        # Fill the shelf_location list
+        fill_shelf_location_list(book_dict=book_dict, isbn=book.isbn)    
+        
+        # Append to the book_list
+        book_list.append(book_dict)
+        
+
+    return book_list, 200
+    
