@@ -51,7 +51,7 @@ def update_a_user(user_id: int, new_data: dict):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return {"message": e}, 500
+        return {"message": str(e)}, 500
     
     # Prepare the updated data to return
     updated_user_data = {
