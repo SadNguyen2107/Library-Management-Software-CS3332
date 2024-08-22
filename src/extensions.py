@@ -12,5 +12,5 @@ from flask_login import LoginManager
 login_manager: LoginManager = LoginManager()
 
 
-from mail import Mail
+from flask_mail import Mail
 mail: Mail = Mail()

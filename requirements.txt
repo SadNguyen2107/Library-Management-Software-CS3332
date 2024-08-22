@@ -3,6 +3,7 @@ Flask-Cors
 flask-restx
 Flask-SQLAlchemy
 Flask-Login
+Flask-Mail
 python-dotenv
 requests
 pyotp

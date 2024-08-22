@@ -1,5 +1,3 @@
-from flask import json
-
 from src.user.service.validation import (
     validate_phone_number,
     validate_password,
@@ -53,7 +51,7 @@ def update_a_user(user_id: int, new_data: dict):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return {"message": "An error occurred while updating the user."}, 500
+        return {"message": e}, 500
     
     # Prepare the updated data to return
     updated_user_data = {
@@ -68,3 +66,32 @@ def update_a_user(user_id: int, new_data: dict):
     }
 
     return updated_user_data, 200
+
+
+def update_member_account_status(data: dict):
+    """
+    Update the account status of a user.
+
+    :param user_id: ID of the user whose account status is being updated
+    :param data: A dictionary containing the new account status
+    :return: Success message or error message with an HTTP status code
+    """
+    member_id = data.get('member_id', None)
+    new_status = data.get('account_status', None)
+    
+    user = User.query \
+        .filter_by(id=member_id) \
+        .first_or_404("Member not found.")
+    
+    # Only update account_status for member only
+    if user.user_role == 'Librarian':
+        return {'message': 'You cannot Inactive other librarian account'}, 400
+    
+    if new_status not in ['Active', 'Inactive']:
+        return {'message': 'Invalid account status provided.'}, 400
+    
+    user.account_status = new_status
+    
+    db.session.commit()
+    
+    return {'message': f'User account status updated to {new_status}.'}, 200

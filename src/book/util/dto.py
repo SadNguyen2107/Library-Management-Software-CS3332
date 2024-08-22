@@ -30,7 +30,7 @@ class BookDto:
         'title': fields.String(required=True, description='The title of the book'),
         'publisher': fields.String(description='The publisher of the book'),
         'edition': fields.String(description='The edition of the book'),
-        'publication_date': fields.String(description='The publication date of the book'),
+        'publication_date': fields.Date(description='The publication date of the book'),
         'language': fields.String(description='The language the book is written in'),
         'number_of_copies_available': fields.Integer(description='Number of copies available in the library'),
         'book_cover_image': fields.String(description='The URL for the book cover image'),
