@@ -28,13 +28,14 @@ def validate_phone_number(phone_number: str):
 # Generate expected email address
 def generate_expected_email(name: str, user_id: str):
     parts = name.split()
+
     if len(parts) == 2:
-        first_name_initial = parts[0]
         last_name_initial = parts[1][0]
+        other_initials = parts[0][0]
     else:
         last_name_initial = parts[-1]
         other_initials = ''.join([p[0] for p in parts[:-1]])
-        
+
     email_prefix = f"{last_name_initial}.{other_initials}{user_id[2:]}"
     return f"{email_prefix}@sis.hust.edu.vn"
         

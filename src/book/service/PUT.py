@@ -71,11 +71,7 @@ def update_a_book(original_isbn: str, new_data: json):
             
             # Convert publication_date to a Python date object
             if 'publication_date' in new_data:
-                try:
-                    book.publication_date = datetime.strptime(new_data['publication_date'], '%Y-%m-%d').date()
-                except ValueError as e:
-                    return {"message": f"Invalid date format for publication_date: {str(e)}"}, 400
-            
+                book.publication_date = datetime.strptime(new_data['publication_date'], '%Y-%m-%d').date()
             
             # Validate the number of shelf locations
             if len(new_data['shelf_locations']) != new_data['number_of_copies_available']:
@@ -93,11 +89,16 @@ def update_a_book(original_isbn: str, new_data: json):
 
                     # Check if the shelf location is occupied
                     book_copy = BookCopy.query.filter_by(shelf_location=location).first()
-                    if book_copy.shelf_location != location:        # If different location -> Throw error
-                        return {
-                            "message": f"Shelf location {location} is already occupied."
-                        }, 400
-            
+                    if book_copy:
+                        if book_copy.shelf_location != location:        # If different location -> Throw error
+                            return {
+                                "message": f"Shelf location {location} is already occupied."
+                            }, 400
+
+                        # Delete that record
+                        db.session.delete(book_copy)
+                        db.session.commit()
+                        
             
             # Check if the ISBN is being updated
             new_isbn = new_data.get('ISBN', original_isbn)
@@ -167,5 +168,4 @@ def update_a_book(original_isbn: str, new_data: json):
     except exc.SQLAlchemyError as e:
         # Rollback the transaction if there is an error
         db.session.rollback()
-        print(f"Error: {e}")
         return {"message": str(e)}, 500

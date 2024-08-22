@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
-from flask import json, Response
+from flask import render_template
 from flask_login import login_user
+from flask_mail import Message
 from werkzeug.security import generate_password_hash, check_password_hash
 from src.extensions import db, mail
 
@@ -97,7 +98,7 @@ def create_a_user(data):
         db.session.rollback()
         # Handle unexpected errors
         return {
-            "message": e
+            "message": str(e)
         }, 500
 
 
@@ -114,13 +115,18 @@ def borrow_a_book(user_id: int, data: dict):
     :param data: Data containing the book_id and other necessary info
     :return: Success message or error message
     """
-    User.query.filter_by(id=user_id) \
+    user = User.query.filter_by(id=user_id) \
         .first_or_404("User not found.")
 
     book_copy = BookCopy.query.filter_by(id=data['book_copy_id']) \
         .first_or_404("Book copy not found.")
 
-
+    # Check For USER.account_status
+    if user.account_status == 'Inactive':
+        return {
+            'message' : 'Your account has been inactive by the Librarian'
+        }, 400
+    
     if book_copy.book_status != 'Available':
         return {
             "message": "Book is not available for borrowing."
@@ -147,6 +153,49 @@ def borrow_a_book(user_id: int, data: dict):
 
     return {"message": "Book borrowed successfully."}, 201
 
+
+def process_book_return(user_id: int, data: dict):
+    """
+    Process the return of a book by a user.
+
+    :param data: A dictionary containing the borrower_id, book_id, and return_date
+    :return: A success message or error message with an HTTP status code
+    """
+    try:
+        book_copy_id = data.get('book_copy_id', None)
+        return_date_str = data.get('return_date', None)
+        
+        # Fetch the deposit record
+        deposit = Deposit.query \
+            .filter_by(borrower_id=user_id, book_id=book_copy_id) \
+            .first_or_404("No matching deposit record found.")
+        
+        # Calculate overdue fines if any
+        due_date = deposit.due_date
+        return_date: date = datetime.strptime(return_date_str, '%Y-%m-%d').date()
+        if return_date > due_date:
+            # Assume overdue fine is calculated per day
+                overdue_days = (return_date - due_date).days
+                deposit.overdue_fines += overdue_days * 10  # Example fine amount: 10 units per day
+
+        # Update the deposit record with the return date
+        deposit.return_date = return_date
+        
+        # Update the book copy status to "Available"
+        book_copy = BookCopy.query.filter_by(id=book_copy_id).first()
+        if book_copy:
+            book_copy.book_status = 'Available'
+        
+        # Commit the changes to the database
+        db.session.commit()
+        
+        return {
+            'message': 'Book return accepted successfully.'
+        }, 200
+
+    except Exception as e:
+        db.session.rollback()
+        return {'message': str(e)}, 500
 
 def login_a_user(data: dict):
     """
@@ -199,20 +248,23 @@ def send_otp_code_to_mail(data: dict):
 
     # Get the OTP code
     otp_code = generate_otp(user_id=user_id)
-
+    
     # Send mail to the user
-    mail.send_mail_to(
-        mail_from="nguyentrungson217@gmail.com",
-        mail_to=user_email,
-        mail_subject="Forgot Password ???",
-        plain_message="",
-        html_message=f"""
-            <h1>Here is the OTP Code to recover</h1>
-            <pre><code>{otp_code}</code></pre>
-        """,
-        image_directory="images/forgot_password.jpg",
+    msg = Message(
+        subject="Library: Mã OTP để xác minh tài khoản (Library: OTP code to verify account)",
+        recipients= [user_email],
     )
     
+    # Create the message
+    msg.html = render_template(
+        'otp_email_template.html',
+        recipient_name=user_by_id.name,
+        otp_code=otp_code,
+        current_year=datetime.now().year,
+    )
+    
+    # Send the email
+    mail.send(msg)
     
     return {
         'message': f"Send OTP code successfully to {user_email}. Check your Junk Mail."

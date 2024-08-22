@@ -48,6 +48,7 @@ class UserDto:
     
     
     borrow_history_dto = api.model('borrow_history', {
+        'book_copy_id': fields.Integer(readonly=True, description='Book copy ID that has been borrowed by the user'),
         'title': fields.String(readonly=True, description='Title of the borrowed book'),
         'issue_date': fields.String(readonly=True, description='Date when the book was issued (YYYY-MM-DD)'),
         'due_date': fields.String(readonly=True, description='Due date for returning the book (YYYY-MM-DD)'),
@@ -56,23 +57,38 @@ class UserDto:
         'renewal_status': fields.String(readonly=True, description='Is user first-time borrow this book or renewed')
     })
     
-    
-    borrow_request_dto = api.model('borrow_request', {
-        'book_copy_id': fields.Integer(required=True, description='Book Copy ID to be borrowed'),
-    })
-    
+        
     login_dto = api.model('login', {
         'email': fields.String(required=True, description="User Hust Email"),
         'password': fields.String(required=True, description="User password")
     })
+    
     
     user_email_dto = api.model('user_email', {
         'user_id': fields.Integer(required=True, description='User Identification'),
         'email': fields.String(required=True, description="User Hust Email"),
     })
     
+    
     otp_dto = api.model('otp', {
         'user_id': fields.Integer(required=True, description='User Identification'),
         'email': fields.String(required=True, description="User Hust Email"),
         'otp_code': fields.String(required=True, description="User OTP"),
+    })
+    
+    
+    borrow_request_dto = api.model('borrow_request', {
+        'book_copy_id': fields.Integer(required=True, description='Book Copy ID to be borrowed'),
+    })
+
+
+    return_book_request_dto = api.model('return_book_request', {
+        'book_copy_id': fields.Integer(required=True, description='The ID of the book copy being returned'),
+        'return_date': fields.Date(required=True, description='The date the book was returned'),
+    })
+    
+    # DTO for updating account status
+    account_status_update_dto = api.model('AccountStatusUpdate', {
+        'member_id':  fields.Integer(required=True, description='Member ID to set status'),
+        'account_status': fields.String(required=True, description='The new account status', enum=['Active', 'Inactive'])
     })

@@ -18,12 +18,14 @@ from src.user.service.GET import (
 from src.user.service.POST import (
     create_a_user,
     borrow_a_book,
+    process_book_return,
     login_a_user,
     send_otp_code_to_mail,
     check_otp_and_login,
 ) 
 from src.user.service.PUT import (
     update_a_user,
+    update_member_account_status,
 )
 
 api = UserDto.api
@@ -36,6 +38,8 @@ _book_request_dto = UserDto.borrow_request_dto
 _login_dto = UserDto.login_dto
 _user_email_dto = UserDto.user_email_dto
 _otp_dto = UserDto.otp_dto
+_return_book_request_dto = UserDto.return_book_request_dto
+_account_status_update_dto = UserDto.account_status_update_dto
 
 
 @api.route('/users')
@@ -147,7 +151,6 @@ class UserBorrow(Resource):
         """Allow user to borrow a book"""
         data = request.json
         return borrow_a_book(user_id=user_id, data=data)
-    
 
 
 @api.route('/user/forgot_password')
@@ -172,3 +175,35 @@ class VerifyOtpCode(Resource):
         """Verify the OTP code given by the user"""
         data = request.json
         return check_otp_and_login(data)
+    
+    
+@api.route('/user/<int:user_id>/return_book')
+@api.param('user_id', "The User Identifier", type=int)
+class UserReturnBook(Resource):
+
+    @api.doc("User return book to the librarian.")
+    @login_required
+    @own_profile_or_librarian_required
+    @api.expect(_return_book_request_dto, validate=True)
+    def post(self, user_id):
+        """User return book to the librarian"""
+        data = request.json
+        return process_book_return(user_id=user_id, data=data)
+    
+    
+@api.route('/librarian/update_member_account_status')
+class UpdateAccountStatus(Resource):
+
+    @api.doc("Update the account status of a user.")
+    @login_required
+    @librarian_required
+    @api.response(200, "Member account_status updated complete")
+    @api.response(404, "Member not found.")
+    @api.expect(_account_status_update_dto, validate=True)
+    def put(self):
+        """Update the account status of a user.
+           
+           2 options only:  'Active' or 'Inactive'
+        """
+        data = request.json
+        return update_member_account_status(data=data)

@@ -38,7 +38,7 @@ def get_borrowed_history(user_id: int):
         .join(BookCopy, Deposit.book_id == BookCopy.id) \
         .join(Book, BookCopy.isbn == Book.isbn) \
         .filter(Deposit.borrower_id == user_id) \
-        .with_entities(Book.title, Deposit.issue_date, Deposit.due_date, Deposit.return_date, Deposit.overdue_fines, Deposit.renewal_status) \
+        .with_entities(BookCopy.id, Book.title, Deposit.issue_date, Deposit.due_date, Deposit.return_date, Deposit.overdue_fines, Deposit.renewal_status) \
         .all()
     
     if not borrow_history:
@@ -47,6 +47,7 @@ def get_borrowed_history(user_id: int):
     # Format the response data
     history = [
         {
+            "book_copy_id": record.id,
             "title": record.title,
             "issue_date": record.issue_date.strftime("%Y-%m-%d"),
             "due_date": record.due_date.strftime("%Y-%m-%d"),
